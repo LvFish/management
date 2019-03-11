@@ -1,0 +1,56 @@
+.title{
+	font-size: 60px;
+    font-weight: bold;	
+}
+.btn{
+	border-radius: 50%;
+    height: 250px;
+    width: 250px;
+    margin-left: 50px;
+    outline: none;
+    text-align: center;
+    font-size: 35px;
+    font-weight: bold;
+    background: none;
+    cursor:pointer;
+}
+.div1{
+    text-align: center;
+    margin-top: 50px;	
+}
+.div2{
+	margin-top: 80px;
+    text-align: center;
+    
+}
+
+body {
+	height: 100%;width: 100%;
+	background: url('http://localhost:8080/struts2/image/timg.jpeg');
+	background-size:cover;
+	text-align: center;
+}
+.btn1{
+	color: red;
+	border-color: red;	
+}
+.btn2{
+	color: green;
+	border-color: green;	
+}
+.btn3{
+	color: blue;
+	border-color: blue;	
+}
+.btn4{
+	color: purple;
+	border-color: purple;	
+}
+.btn5{
+	color: #787878;
+	border-color: #787878;	
+}
+.div3{
+	margin-top: 10px;
+    text-align: center;
+}
