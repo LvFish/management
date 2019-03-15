@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div >
-		<form action="login" class="form">
+		<form action="hello" class="form">
 			<div class="context">
 				<span class="title">项目管理系统</span><br>
 				<input type="text" name="username" class="username" placeholder="用户名" required="required" />	<br>	

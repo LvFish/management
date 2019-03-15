@@ -9,13 +9,12 @@ import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
 
-public class UserDao {
+public class UserDao extends BaseDao{
 	public boolean login(String username, String password) throws ClassNotFoundException, SQLException{
 		boolean flag = false;
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection connention = DriverManager.getConnection("jdbc:mysql://localhost:3306/management", "root", "root");
-		String sql = "SELECT * FROM user where username = '"+username+"' and password='"+password+"'"; //准备sql语句
+		Connection connention = getConn();
 		Statement statement = connention.createStatement();
+		String sql = "SELECT * FROM user where username = '"+username+"' and password='"+password+"'"; //准备sql语句
 		ResultSet resultSet = statement.executeQuery(sql);
 		while(resultSet.next()){
 			flag = true;

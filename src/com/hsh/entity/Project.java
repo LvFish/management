@@ -5,11 +5,11 @@ import java.util.Date;
 public class Project {
 	private int pid;
 	private String pName;
-	private Date create;
+	private String create;
 	private int createBy;
 	private int headId;
 	private String status;
-	private Date modifyTime;
+	private String modifyTime;
 	public int getPid() {
 		return pid;
 	}
@@ -22,10 +22,10 @@ public class Project {
 	public void setpName(String pName) {
 		this.pName = pName;
 	}
-	public Date getCreate() {
+	public String getCreate() {
 		return create;
 	}
-	public void setCreate(Date create) {
+	public void setCreate(String create) {
 		this.create = create;
 	}
 	public int getCreateBy() {
@@ -46,12 +46,13 @@ public class Project {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public Date getModifyTime() {
+	public String getModifyTime() {
 		return modifyTime;
 	}
-	public void setModifyTime(Date modifyTime) {
+	public void setModifyTime(String modifyTime) {
 		this.modifyTime = modifyTime;
 	}
+	
 	
 	
 }
