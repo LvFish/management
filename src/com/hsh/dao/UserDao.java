@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Map;
+
+import com.opensymphony.xwork2.ActionContext;
 
 public class UserDao {
 	public boolean login(String username, String password) throws ClassNotFoundException, SQLException{
@@ -16,7 +19,11 @@ public class UserDao {
 		ResultSet resultSet = statement.executeQuery(sql);
 		while(resultSet.next()){
 			flag = true;
-			System.out.println(resultSet.getInt(1));
+			int permission = resultSet.getInt(4);
+			Map<String, Object> session = ActionContext.getContext().getSession();  //记录用户登录信息 
+			session.put("username", username); 
+			session.put("permission", permission);
+//			System.out.println(resultSet.getInt(1));
 		}
 			//关闭（倒关）
 		resultSet.close();

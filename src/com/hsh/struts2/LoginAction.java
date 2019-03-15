@@ -20,8 +20,9 @@ public class LoginAction {
 	}
 	public String execute() throws Exception {
 		UserDao user = new UserDao();
-		if(user.login(username, password))
+		if(user.login(username, password)){
 			return "success";
+		}
 		else{
 			ActionContext.getContext().put("msg", "账号或密码错误");
 			return "failed";

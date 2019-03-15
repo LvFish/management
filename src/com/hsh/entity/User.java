@@ -3,6 +3,13 @@ package com.hsh.entity;
 public class User {
 	private String username;
 	private String password;
+	private int permission;
+	public int getPermission() {
+		return permission;
+	}
+	public void setPermission(int permission) {
+		this.permission = permission;
+	}
 	public String getUsername() {
 		return username;
 	}
