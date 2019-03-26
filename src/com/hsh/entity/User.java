@@ -1,6 +1,7 @@
 package com.hsh.entity;
 
 public class User {
+	private String uId;
 	private String username;
 	private String password;
 	private int permission;
@@ -9,6 +10,12 @@ public class User {
 	}
 	public void setPermission(int permission) {
 		this.permission = permission;
+	}
+	public String getuId() {
+		return uId;
+	}
+	public void setuId(String uId) {
+		this.uId = uId;
 	}
 	public String getUsername() {
 		return username;

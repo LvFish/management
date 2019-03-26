@@ -1,15 +1,22 @@
 package com.hsh.entity;
 
-import java.util.Date;
-
-public class Project {
+public class Personnel {
+	private int id;
+	private int uid;
+	private String uName;
 	private int pid;
 	private String pName;
-	private String create;
 	private int createBy;
-	private int headId;
+	private String createByName;
+	private String create;
 	private String status;
 	private String modifyTime;
+	public int getUid() {
+		return uid;
+	}
+	public void setUid(int uid) {
+		this.uid = uid;
+	}
 	public int getPid() {
 		return pid;
 	}
@@ -22,23 +29,23 @@ public class Project {
 	public void setpName(String pName) {
 		this.pName = pName;
 	}
-	public String getCreate() {
-		return create;
-	}
-	public void setCreate(String create) {
-		this.create = create;
-	}
 	public int getCreateBy() {
 		return createBy;
 	}
 	public void setCreateBy(int createBy) {
 		this.createBy = createBy;
 	}
-	public int getHeadId() {
-		return headId;
+	public String getCreateByName() {
+		return createByName;
 	}
-	public void setHeadId(int headId) {
-		this.headId = headId;
+	public void setCreateByName(String createByName) {
+		this.createByName = createByName;
+	}
+	public String getCreate() {
+		return create;
+	}
+	public void setCreate(String create) {
+		this.create = create;
 	}
 	public String getStatus() {
 		return status;
@@ -52,6 +59,19 @@ public class Project {
 	public void setModifyTime(String modifyTime) {
 		this.modifyTime = modifyTime;
 	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getuName() {
+		return uName;
+	}
+	public void setuName(String uName) {
+		this.uName = uName;
+	}
+	
 	
 	
 	

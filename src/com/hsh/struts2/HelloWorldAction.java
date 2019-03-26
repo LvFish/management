@@ -4,14 +4,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.hsh.dao.ProjectDao;
-import com.hsh.entity.Project;
+import com.hsh.entity.Project1;
 
 public class HelloWorldAction{
 	   private String name;
 
 	   public String execute() throws Exception {
 		  SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		  Project p = new Project();
+		  Project1 p = new Project1();
 		  p.setpName("test2");
 		  p.setCreate(fmt.format(new Date()));
 		  p.setCreateBy(1);

@@ -4,18 +4,101 @@
    "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 <constant name="struts.devMode" value="true" />
-   <package name="helloworld" extends="struts-default">
-     
-      <action name="hello" 
-            class="com.hsh.struts2.HelloWorldAction" 
-            method="execute">
-            <result name="success">/helloWorld.jsp</result>
-      </action>
+   <package name="login" extends="struts-default">
       <action name="login"
       		class="com.hsh.struts2.LoginAction"
       		method="execute">
       		<result name="success">/index.jsp</result>
       		<result name="failed">/login.jsp</result>
+      </action>
+   </package>
+   <package name="index" extends="struts-default">
+      <action name="index"
+      		class="com.hsh.struts2.ProjectAction"
+      		method="execute">
+      		<result name="success">/index.jsp</result>
+      </action>
+   </package>
+   
+   
+   <package name="project" extends="struts-default">
+   		<action name="project" 
+            class="com.hsh.struts2.ProjectAction" 
+            method="execute">
+            <result name="success">/project.jsp</result>
+      	</action>
+      	<action name="projectSearch" 
+            class="com.hsh.struts2.ProjectAction" 
+            method="queryByPName">
+            <result name="success">/index.jsp</result>
+      	</action>
+      	<action name="addProject" 
+            class="com.hsh.struts2.ProjectAction" 
+            method="addProject">
+            <result name="success">/index.jsp</result>
+      	</action>
+      	<action name="projectDelete" 
+            class="com.hsh.struts2.ProjectAction" 
+            method="deleteById">
+            <result name="success">/index.jsp</result>
+      	</action>
+      	<action name="editProject"
+      		class="com.hsh.struts2.ProjectAction"
+      		method="editProject">
+      		<result name="success">/edit-project.jsp</result>
+      	</action>
+      	<action name="updateProject"
+      		class="com.hsh.struts2.ProjectAction"
+      		method="updateProject">
+      		<result name="success">/edit-project.jsp</result>
+      	</action>
+   </package>
+   
+   
+    <package name="managePerson" extends="struts-default">
+      <action name="manage-person"
+      		class="com.hsh.struts2.ManagePersonAction"
+      		method="execute">
+      		<result name="success">/manage-person.jsp</result>
+      		<result name="failed">/login.jsp</result>
+      </action>
+      <action name="queryByPId"
+      		class="com.hsh.struts2.ManagePersonAction"
+      		method="queryByPId">
+      		<result name="success">/person-detail.jsp</result>
+      		<!-- <result name="failed">/login.jsp</result> -->
+      </action>
+      <action name="deleteById"
+      		class="com.hsh.struts2.ManagePersonAction"
+      		method="deleteById">
+      		<result name="success">/person-detail.jsp</result>
+      		<!-- <result name="failed">/login.jsp</result> -->
+      </action>
+      <action name="editStatus"
+      		class="com.hsh.struts2.ManagePersonAction"
+      		method="editStatus">
+      </action>
+   </package>
+   
+   
+   <package name="manageTask" extends="struts-default">
+      <action name="manage-task"
+      		class="com.hsh.struts2.ManageTaskAction"
+      		method="execute">
+      		<result name="success">/manage-task.jsp</result>
+      		<result name="failed">/login.jsp</result>
+      </action>
+      <action name="queryTaskByPId"
+      		class="com.hsh.struts2.ManageTaskAction"
+      		method="queryTaskByPId">
+      		<result name="success">/task-detail.jsp</result>
+      		<!-- <result name="failed">/login.jsp</result> -->
+      </action>
+      <action name="deleteTaskByTId"
+      		class="com.hsh.struts2.ManageTaskAction"
+      		method="deleteTaskByTId">
+      		<result name="success">/task-detail.jsp</result>
+      		<!-- <result name="failed">/login.jsp</result> -->
       </action>
    </package>
 </struts>
