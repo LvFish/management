@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.hsh.entity.Personnel;
+import com.hsh.entity.User;
 
 public class PersonnelDao extends BaseDao {
 	
@@ -81,7 +82,7 @@ public class PersonnelDao extends BaseDao {
 	public int insert(Personnel personnel) throws ClassNotFoundException, SQLException{
 		Connection conn = getConn();
 	    int i = 0;
-	    String sql = "insert into personnel (uid,pid,create,createBy,`status`,modifyTime) values(?,?,?,?,?,?)";
+	    String sql = "insert into personnel (uid,pid,`create`,createBy,`status`,modifyTime) values(?,?,?,?,?,?)";
 	    System.out.println(sql);
 	    PreparedStatement pstmt;
 	    try {
@@ -132,5 +133,30 @@ public class PersonnelDao extends BaseDao {
 		    } catch (SQLException e) {
 		        e.printStackTrace();
 		    }
+		}
+		
+		public List<User> queryUserNotInProject(String pid) throws ClassNotFoundException, SQLException{
+			Connection conn = getConn();
+			String sql = "SELECT * FROM USER u "
+					+ "WHERE u.uid NOT IN (SELECT p.uid FROM personnel p WHERE p.pid="+pid+") "
+					+ "AND u.uid NOT IN (SELECT p1.headerId FROM project p1 WHERE p1.pid="+pid+") "
+					+ "AND u.permission !=1";
+			System.out.println("queryById "+sql);
+			Statement statement = conn.createStatement();
+			ResultSet resultSet = statement.executeQuery(sql);
+			List<User> list = new ArrayList<>();
+			while(resultSet.next()){
+				User user = new User();
+				user.setuId(resultSet.getString(1));
+				user.setUsername(resultSet.getString(2));
+				user.setPassword(resultSet.getString(3));
+				user.setPermission(resultSet.getInt(4));
+				list.add(user);
+			}
+			//关闭（倒关）
+			resultSet.close();
+			statement.close();
+			conn.close();
+			return list;
 		}
 }

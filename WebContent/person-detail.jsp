@@ -15,13 +15,13 @@
 	href="https://fonts.googleapis.com/css?family=Roboto:400,700">
 <!-- https://fonts.google.com/specimen/Roboto -->
 <link rel="stylesheet"
-	href="http://localhost:8080/struts2/css/fontawesome.min.css">
+	href="/struts2/css/fontawesome.min.css">
 <!-- https://fontawesome.com/ -->
 <link rel="stylesheet"
-	href="http://localhost:8080/struts2/css/bootstrap.min.css">
+	href="/struts2/css/bootstrap.min.css">
 <!-- https://getbootstrap.com/ -->
 <link rel="stylesheet"
-	href="http://localhost:8080/struts2/css/templatemo-style.css">
+	href="/struts2/css/templatemo-style.css">
 
 </head>
 <script src="js/jquery-3.3.1.min.js"></script>
@@ -88,21 +88,12 @@ $(document).ready(function(){
 							<i class="fas fa-shopping-cart"></i> 任务管理
 					</a></li>
 
-					<li class="nav-item"><a class="nav-link" href="accounts.html">
+					<li class="nav-item"><a class="nav-link" href="system">
 							<i class="far fa-user"></i> 系统维护
 					</a></li>
-					<li class="nav-item dropdown"><a
-						class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-						role="button" data-toggle="dropdown" aria-haspopup="true"
-						aria-expanded="false"> <i class="fas fa-cog"></i> <span>
-								信息查询 <i class="fas fa-angle-down"></i>
-						</span>
-					</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="#">Profile</a> <a
-								class="dropdown-item" href="#">Billing</a> <a
-								class="dropdown-item" href="#">Customize</a>
-						</div></li>
+					<li class="nav-item"><a class="nav-link" href="query-info">
+							<i class="far fa-user"></i> 信息查询
+					</a></li>
 				</ul>
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link d-block"
@@ -127,7 +118,7 @@ $(document).ready(function(){
 					class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
 					<h2 class="tm-block-title">添加人员</h2>
 					<div style="margin-bottom: 20px">
-							<input type="image" src="http://localhost:8080/struts2/image/icon_add.png" 
+							<input type="image" src="/struts2/image/icon_add.png" 
 							style="width:20px;margin-left:10px;height:20px;" onclick="Add()"/>							
 					</div>
 					<table class="table">
@@ -159,6 +150,33 @@ $(document).ready(function(){
 						</tbody>
 					</table>
 				</div>
+				
+			</div>
+			<div class="show_table" style="display:none;position: absolute;" id="show_table">
+				<div class="col-12 tm-block-col">
+				<div
+					class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+					<h2 class="tm-block-title">所有人员</h2>
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">序号</th>
+								<th scope="col">名称</th>
+								<th scope="col">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach items="${userList}" var="u" varStatus="status">
+								<tr>
+									<th scope="row"><b>${status.index+1}</b></th>
+									<td>${u.username }</td>
+									<td><button type="button" class="table_button" onclick="chooseUser('${u.uId}','${u.username }')">选中</button></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+					</div>
+			</div>
 			</div>
 			<script src="js/jquery-3.3.1.min.js"></script>
 			<script src="js/index.js"></script>
@@ -175,7 +193,6 @@ $(document).ready(function(){
 				let ctxLine, ctxBar, ctxPie, optionsLine, optionsBar, optionsPie, configLine, configBar, configPie, lineChart;
 				barChart, pieChart;
 				
-				
 				// DOM is ready
 				$(function() {
 					drawLineChart(); // Line Chart
@@ -191,7 +208,13 @@ $(document).ready(function(){
 					window.location.href="deleteById.action?id="+val;
 				}
 				function Add(){
-					
+					var obj  = document.getElementById("show_table");
+					obj.style.display = "block";
+				}
+				function chooseUser(id,username){
+					document.getElementById("show_table").style.display="none";
+					window.location.href="addPersonnel.action?uid="+id;
+					/* document.getElementById("headName").value = username; */
 				}
 			</script>
 </body>

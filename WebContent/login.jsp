@@ -11,13 +11,13 @@
 	href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
 <!-- https://fonts.google.com/specimen/Open+Sans -->
 <link rel="stylesheet"
-	href="http://localhost:8080/struts2/css/fontawesome.min.css" />
+	href="/struts2/css/fontawesome.min.css" />
 <!-- https://fontawesome.com/ -->
 <link rel="stylesheet"
-	href="http://localhost:8080/struts2/css/bootstrap.min.css" />
+	href="/struts2/css/bootstrap.min.css" />
 <!-- https://getbootstrap.com/ -->
 <link rel="stylesheet"
-	href="http://localhost:8080/struts2/css/templatemo-style.css">
+	href="/struts2/css/templatemo-style.css">
 
 </head>
 
@@ -49,21 +49,12 @@
 							<i class="fas fa-shopping-cart"></i> 任务管理
 					</a></li>
 
-					<li class="nav-item"><a class="nav-link" href="accounts.html">
+					<li class="nav-item"><a class="nav-link" href="system">
 							<i class="far fa-user"></i> 系统维护
 					</a></li>
-					<li class="nav-item dropdown"><a
-						class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-						role="button" data-toggle="dropdown" aria-haspopup="true"
-						aria-expanded="false"> <i class="fas fa-cog"></i>
-							<span> 信息查询 <i class="fas fa-angle-down"></i>
-						</span>
-					</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="#">Profile</a> <a
-								class="dropdown-item" href="#">Billing</a> <a
-								class="dropdown-item" href="#">Customize</a>
-						</div></li>
+					<li class="nav-item"><a class="nav-link" href="query-info">
+							<i class="far fa-user"></i> 信息查询
+					</a></li>
 				</ul>
 			</div>
 		</div>
@@ -98,6 +89,16 @@
 									%>
 									<div  style="text-align: center;margin-bottom: 10px;">
 										<span  style="color:red;"> <%=request.getAttribute("msg")%>
+										</span><br>
+									</div>
+									<%
+										}
+									%>
+									<%
+										if (request.getSession().getAttribute("msg_system") != null) {
+									%>
+									<div  style="text-align: center;margin-bottom: 10px;">
+										<span  style="color:red;"> <%=request.getSession().getAttribute("msg_system")%>
 										</span><br>
 									</div>
 									<%

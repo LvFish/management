@@ -20,6 +20,41 @@
       </action>
    </package>
    
+   <package name="info" extends="struts-default">
+      <action name="query-info"
+      		class="com.hsh.struts2.InfoAction"
+      		method="execute">
+      		<result name="success">/query-info.jsp</result>
+      </action>
+      <action name="querybyName"
+      		class="com.hsh.struts2.InfoAction"
+      		method="queryInfo">
+      		<result name="success">/query-info.jsp</result>
+      </action>
+   </package>
+   
+   <package name="system" extends="struts-default">
+       <action name="system"
+       		 class="com.hsh.struts2.SystemAction"
+      		 method="execute">
+      		 <result name="success">/system.jsp</result>
+      		 <result name="failed">/login.jsp</result>	 
+       </action>
+       <action name="editUserPassword"
+       		 class="com.hsh.struts2.SystemAction"
+       		 method="editUserPassword">
+       </action>
+       <action name="addUser"
+       		 class="com.hsh.struts2.SystemAction"
+      		 method="addUser">
+      		 <result name="success">/system.jsp</result> 
+       </action>
+       <action name="userSearch"
+       		 class="com.hsh.struts2.SystemAction"
+      		 method="userSearch">
+      		 <result name="success">/system.jsp</result> 
+       </action>
+   </package>
    
    <package name="project" extends="struts-default">
    		<action name="project" 
@@ -78,6 +113,12 @@
       		class="com.hsh.struts2.ManagePersonAction"
       		method="editStatus">
       </action>
+      <action name="addPersonnel"
+      		class="com.hsh.struts2.ManagePersonAction"
+      		method="addPersonnel">
+      		<result name="success">/person-detail.jsp</result>
+      </action>
+      
    </package>
    
    
@@ -100,5 +141,16 @@
       		<result name="success">/task-detail.jsp</result>
       		<!-- <result name="failed">/login.jsp</result> -->
       </action>
+      <action name="addTask"
+      		class="com.hsh.struts2.ManageTaskAction"
+      		method="addTask">
+      		<result name="success">/task-detail.jsp</result>
+      </action>
+      <action name="editUser"
+      			class="com.hsh.struts2.ManageTaskAction"
+      			method="editUser">
+      </action>
    </package>
+   
+   
 </struts>

@@ -42,7 +42,7 @@
 
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mx-auto h-100">
-					<li class="nav-item"><a class="nav-link active" href="#">
+					<li class="nav-item"><a class="nav-link" href="index">
 							<i class="fas fa-tachometer-alt"></i> 项目管理 <span class="sr-only">(current)</span>
 					</a></li>
 					<li class="nav-item"><a class="nav-link" href="manage-person">
@@ -53,7 +53,7 @@
 							<i class="fas fa-shopping-cart"></i> 任务管理
 					</a></li>
 
-					<li class="nav-item"><a class="nav-link" href="system">
+					<li class="nav-item"><a class="nav-link active" href="#">
 							<i class="far fa-user"></i> 系统维护
 					</a></li>
 					<li class="nav-item"><a class="nav-link" href="query-info">
@@ -73,7 +73,7 @@
 			<div class="row">
 				<div class="col">
 					<p class="text-white mt-5 mb-5">
-						欢迎, <b> ${username} ${permission}</b>
+						信息维护
 					</p>
 				</div>
 			</div>
@@ -81,9 +81,9 @@
 			<div class="col-12 tm-block-col">
 				<div
 					class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
-					<h2 class="tm-block-title">项目信息</h2>
+					<h2 class="tm-block-title">人员信息</h2>
 					<div style="margin-bottom: 20px">
-							<input class="search_pName" id="pName" type="text" placeholder="请输入项目名" name="pName"  />
+							<input class="search_pName" id="uName" type="text" placeholder="请输入用户名" name="uName"  />
 							<input type="image" src="/struts2/img/search.png" 
 							style="width:20px;margin-left:10px;height:20px;" onclick="Query()"/>
 							<input type="image" src="/struts2/image/icon_add.png" 
@@ -93,27 +93,23 @@
 						<thead>
 							<tr>
 								<th scope="col">序号</th>
-								<th scope="col">项目名</th>
-								<th scope="col">创建时间</th>
-								<th scope="col">创建人</th>
-								<th scope="col">负责人</th>
-								<th scope="col">项目状态</th>
-								<th scope="col">修改时间</th>
+								<th scope="col">用户名</th>
+								<th scope="col">密码</th>
+								<!-- <th scope="col">手机号码</th> -->
 								<th scope="col">操作</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${projectList}" var="p" varStatus="status">
+							<c:forEach items="${userList}" var="u" varStatus="status">
 								<tr>
 									<th scope="row"><b>${status.index+1}</b></th>
-									<td>${p.pName}</td>
-									<td>${p.create }</td>
-									<td>${p.createByName }</td>
-									<td>${p.headName }</td>
-									<td>${p.status }</td>
-									<td>${p.modifyTime }</td>
-									<td><button type="button" class="table_button" onclick="edit(${p.pid})">修改</button> 
-									<button type="button" class="table_button" onclick="deleteById(${p.pid})">删除</button></td>
+									<td>${u.username}</td>
+									<td><input type=password readonly="readonly"  style= "outline: none;color: #fff;background-color:transparent;border:none; " id="password${status.index+1 }" value="******"/></td>
+									<%-- <td>${u.tel}</td> --%>
+									<td>
+									<button type="button" id="system_edit${status.index+1}" class="table_button" onclick="edit(${u.uId},${status.index+1})">编辑</button>
+									<button type="button" id="system_save${status.index+1}" style="display:none;" class="table_button" onclick="save(${u.uId},${status.index+1})">保存</button>
+									<button type="button" id="system_cancel${status.index+1}" style="display:none;" class="table_button" onclick="cancel(${status.index+1})">取消</button></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -145,27 +141,61 @@
 						updateBarChart();
 					});
 				})
-				function edit(val){
-					if(<%= session.getAttribute("permission")%> != 1){
-						alert("权限不足");
-					}else{
-						window.location.href="editProject.action?PId="+val;
-					}
+				function edit(val,id){
+					var system_edit = "system_edit"+id;
+					var system_save = "system_save"+id;
+					var system_cancel = "system_cancel"+id;
+					var password = "password"+id;
+					document.getElementById(system_edit).style.display="none";
+					document.getElementById(system_save).style.display="";
+					document.getElementById(system_cancel).style.display="";
+					var td = document.getElementById(password);
+					td.removeAttribute("readonly");
+					td.style.border="";
+					td.value="";
 				}
-				function deleteById(val){
-					if(<%= session.getAttribute("permission")%> != 1){
-						alert("权限不足");
-					}else{
-						window.location.href="projectDelete.action?pId="+val;
-					}
+				function cancel(id){
+					var system_edit = "system_edit"+id;
+					var system_save = "system_save"+id;
+					var system_cancel = "system_cancel"+id;
+					var password = "password"+id;
+					document.getElementById(system_edit).style.display="";
+					document.getElementById(system_save).style.display="none";
+					document.getElementById(system_cancel).style.display="none";
+					var td = document.getElementById(password);
+					td.setAttribute("readonly","readonly");
+					td.style.border="none";
+					td.value="******";
+				}
+				function save(val,id){
+					var system_edit = "system_edit"+id;
+					var system_save = "system_save"+id;
+					var system_cancel = "system_cancel"+id;
+					var password = "password"+id;
+					document.getElementById(system_edit).style.display="";
+					document.getElementById(system_save).style.display="none";
+					document.getElementById(system_cancel).style.display="none";
+					var td = document.getElementById(password);
+					td.setAttribute("readonly","readonly");
+					td.style.border="none";
+					var password = td.value;
+					td.value="******";
+					$.ajax({
+			        	  type: 'POST',
+			        	  url: 'editUserPassword.action',
+			        	  data: {uid:val,password:password},
+			        	  success: function(data){
+		                      
+		                   }
+		      		});
 				}
 				function Query(){
-					var pName = document.getElementById("pName").value;
-					window.location.href="projectSearch.action?pName="+pName;
+					var uName = document.getElementById("uName").value;
+					window.location.href="userSearch.action?uName="+uName;
 				}
 				function Add(){
-					var pName = document.getElementById("pName").value;
-					window.location.href="addProject.action?pName="+pName;
+					var uName = document.getElementById("uName").value;
+					window.location.href="addUser.action?uName="+uName;
 				}
 			</script>
 </body>

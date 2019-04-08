@@ -1,7 +1,9 @@
 package com.hsh.struts2;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,9 +14,11 @@ import org.apache.struts2.ServletActionContext;
 import com.hsh.dao.PersonnelDao;
 import com.hsh.dao.ProjectDao;
 import com.hsh.dao.TaskDao;
+import com.hsh.dao.UserDao;
 import com.hsh.entity.Personnel;
 import com.hsh.entity.Project1;
 import com.hsh.entity.Task;
+import com.hsh.entity.User;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 
@@ -52,12 +56,17 @@ public class ManageTaskAction implements Action{
 		System.out.println("pId pName = "+pId+" "+pName);
 		TaskDao taskDao = new TaskDao();
 		List<Task> list = new ArrayList<>();
+		List<User> userList = new ArrayList<>();
+		UserDao userDao = new UserDao();
+		userList = userDao.queryByPId(pId);
 		list = taskDao.queryTaskByPId(Integer.valueOf(pId));
 //		list = personnelDao.queryByPId(Integer.valueOf(pId));
 		Map<String,Object> map =  ActionContext.getContext().getSession();
 		map.put("taskList", list);
+		map.put("pid", pId);
 //		System.out.println(list.size());
 		map.put("pName", pName);
+		map.put("userList", userList);
 		return "success";
 	}
 	
@@ -77,4 +86,40 @@ public class ManageTaskAction implements Action{
 		return "success";
 	}
 	
+	public String addTask() throws ClassNotFoundException, SQLException{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String taskName = request.getParameter("taskName");
+		Map<String,Object> map =  ActionContext.getContext().getSession();
+		String createBy = map.get("uid").toString();
+		String pid = map.get("pid").toString();
+		Task task = new Task();
+		task.setPid(Integer.valueOf(pid));
+		task.setCreateBy(Integer.valueOf(createBy));
+		task.setTaskName(taskName);
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		task.setCreate(fmt.format(new Date()));
+		task.setModifyTime(fmt.format(new Date()));
+		task.setStatus("start");
+		TaskDao taskDao = new TaskDao();
+		taskDao.addTask(task);
+		List<Task> list = new ArrayList<>();
+		list = taskDao.queryTaskByPId(Integer.valueOf(pid));
+		map.put("taskList", list);
+		return "success";
+	}
+	
+	public String editUser()throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String tid = request.getParameter("tid");
+		String uid = request.getParameter("uid");
+		String type = request.getParameter("type");
+		int t = 1;
+		if(type.equals("")||type==null){
+			t = 0;
+		}
+		TaskDao taskDao = new TaskDao();
+		taskDao.editUser(tid, uid, t);
+		return null;
+		
+	}
 }

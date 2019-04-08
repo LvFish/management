@@ -15,16 +15,35 @@
 	href="https://fonts.googleapis.com/css?family=Roboto:400,700">
 <!-- https://fonts.google.com/specimen/Roboto -->
 <link rel="stylesheet"
-	href="http://localhost:8080/struts2/css/fontawesome.min.css">
+	href="/struts2/css/fontawesome.min.css">
 <!-- https://fontawesome.com/ -->
 <link rel="stylesheet"
-	href="http://localhost:8080/struts2/css/bootstrap.min.css">
+	href="/struts2/css/bootstrap.min.css">
 <!-- https://getbootstrap.com/ -->
 <link rel="stylesheet"
-	href="http://localhost:8080/struts2/css/templatemo-style.css">
+	href="/struts2/css/templatemo-style.css">
 
 </head>
-
+<script src="js/jquery-3.3.1.min.js"></script>
+<script type="Text/JavaScript">
+var tid;
+var tid2;
+var td;
+$(document).ready(function(){
+	$("table tr").dblclick(function(){
+		var obj  = document.getElementById("show_table");
+		obj.style.display = "block";
+		var me = $(this);
+	    td = me.find("td.uName");
+	    var tds = me.find("td");
+	    tid = tds[0].innerHTML;
+	    tid2 = tds[1].innerHTML;
+	});
+	/* $("table .status").dblclick(function(){
+	    
+	}); */
+})
+</script>
 <body id="reportsPage">
 	<div class="" id="home">
 		<nav class="navbar navbar-expand-xl">
@@ -53,21 +72,12 @@
 							<i class="fas fa-shopping-cart"></i> 任务管理
 					</a></li>
 
-					<li class="nav-item"><a class="nav-link" href="accounts.html">
+					<li class="nav-item"><a class="nav-link" href="system">
 							<i class="far fa-user"></i> 系统维护
 					</a></li>
-					<li class="nav-item dropdown"><a
-						class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-						role="button" data-toggle="dropdown" aria-haspopup="true"
-						aria-expanded="false"> <i class="fas fa-cog"></i> <span>
-								信息查询 <i class="fas fa-angle-down"></i>
-						</span>
-					</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="#">Profile</a> <a
-								class="dropdown-item" href="#">Billing</a> <a
-								class="dropdown-item" href="#">Customize</a>
-						</div></li>
+					<li class="nav-item"><a class="nav-link" href="query-info">
+							<i class="far fa-user"></i> 信息查询
+					</a></li>
 				</ul>
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link d-block"
@@ -90,14 +100,12 @@
 			<div class="col-12 tm-block-col">
 				<div
 					class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
-					<!-- <h2 class="tm-block-title">所属项目</h2> -->
-					<!-- <div style="margin-bottom: 20px">
-						<form action="projectSearch" method="post">
-							<input class="search_pName" type="text" placeholder="请输入项目名" name="pName"  />
-							<input type="image" src="http://localhost:8080/struts2/img/search.png" 
-							style="width:20px;margin-left:10px;height:20px;"/>							
-						</form>
-					</div> -->
+					<!-- <!-- <h2 class="tm-block-title">所属项目</h2> -->
+					<div style="margin-bottom: 20px">
+							<input class="search_pName" id="taskName" type="text" placeholder="新建任务" name="taskName"  />
+							<input type="image" src="/struts2/image/icon_add.png" 
+							style="width:20px;margin-left:10px;height:20px;" onclick="Add()"/>							
+					</div>
 					<table class="table">
 						<thead>
 							<tr>
@@ -106,7 +114,7 @@
 								<th scope="col">任务</th>
 								<th scope="col">创建时间</th>
 								<th scope="col">创建人</th>
-								<th scope="col">任务状态</th>
+								<!-- <th scope="col">任务状态</th> -->
 								<th scope="col">修改时间</th>
 								<th scope="col">操作</th>
 							</tr>
@@ -115,11 +123,12 @@
 							<c:forEach items="${taskList}" var="p" varStatus="status">
 								<tr>
 									<th scope="row"><b>${status.index+1}</b></th>
-									<td>${p.uName}</td>
+									<td style="display:none">${p.tid }</td>
+									<td class="uName">${p.uName}</td>
 									<td>${p.taskName}</td>
 									<td>${p.create }</td>
 									<td>${p.createByName }</td>
-									<td>${p.status }</td>
+									<%-- <td class="status">${p.status }</td> --%>
 									<td>${p.modifyTime }</td>
 									<td><button type="button" class="table_button" onclick="edit(${p.tid})">删除</button> 
 									</td>
@@ -128,6 +137,32 @@
 						</tbody>
 					</table>
 				</div>
+			</div>
+			<div class="show_table" style="display:none;position: absolute;" id="show_table">
+				<div class="col-12 tm-block-col">
+				<div
+					class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+					<h2 class="tm-block-title">所有人员</h2>
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">序号</th>
+								<th scope="col">名称</th>
+								<th scope="col">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach items="${userList}" var="u" varStatus="status">
+								<tr>
+									<th scope="row"><b>${status.index+1}</b></th>
+									<td>${u.username }</td>
+									<td><button type="button" class="table_button" onclick="chooseUser('${u.uId}','${u.username }')">选中</button></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+					</div>
+			</div>
 			</div>
 			<script src="js/jquery-3.3.1.min.js"></script>
 			<script src="js/index.js"></script>
@@ -156,6 +191,23 @@
 				})
 				function edit(val){
 					window.location.href="deleteTaskByTId.action?id="+val;
+				}
+				function Add(){
+					var taskName = document.getElementById("taskName").value;
+					window.location.href="addTask.action?taskName="+taskName;
+				}
+				function chooseUser(uid,username){
+					document.getElementById("show_table").style.display="none";
+					td.text(username); 
+					/* alert(username+" "+uid); */
+					$.ajax({
+			        	  type: 'POST',
+			        	  url: 'editUser.action',
+			        	  data: {tid:tid,uid:uid,type:tid2},
+			        	  success: function(data){
+		                      
+		                   }
+		      		});
 				}
 			</script>
 </body>

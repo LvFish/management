@@ -42,7 +42,7 @@
 
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mx-auto h-100">
-					<li class="nav-item"><a class="nav-link active" href="#">
+					<li class="nav-item"><a class="nav-link" href="index">
 							<i class="fas fa-tachometer-alt"></i> 项目管理 <span class="sr-only">(current)</span>
 					</a></li>
 					<li class="nav-item"><a class="nav-link" href="manage-person">
@@ -56,7 +56,7 @@
 					<li class="nav-item"><a class="nav-link" href="system">
 							<i class="far fa-user"></i> 系统维护
 					</a></li>
-					<li class="nav-item"><a class="nav-link" href="query-info">
+					<li class="nav-item  active"><a class="nav-link" href="#">
 							<i class="far fa-user"></i> 信息查询
 					</a></li>
 				</ul>
@@ -83,28 +83,36 @@
 					class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
 					<h2 class="tm-block-title">项目信息</h2>
 					<div style="margin-bottom: 20px">
-							<input class="search_pName" id="pName" type="text" placeholder="请输入项目名" name="pName"  />
+							<select id="select_class" class="select_class">
+								<option value="project">项目</option>
+								<option value="task">任务</option>
+								<option value="person">人员</option>
+							</select>
+							<input class="search_pName" id="pName" type="text" placeholder="请输入名称" name="pName"  />
 							<input type="image" src="/struts2/img/search.png" 
-							style="width:20px;margin-left:10px;height:20px;" onclick="Query()"/>
-							<input type="image" src="/struts2/image/icon_add.png" 
-							style="width:20px;margin-left:10px;height:20px;" onclick="Add()"/>							
+							style="width:20px;margin-left:10px;height:20px;" onclick="Query()"/>							
 					</div>
-					<table class="table">
+					<%
+						if(request.getAttribute("info_type") != "0")
+						{
+					%>
+					<div >
+						<table class="table">
 						<thead>
 							<tr>
-								<th scope="col">序号</th>
-								<th scope="col">项目名</th>
-								<th scope="col">创建时间</th>
-								<th scope="col">创建人</th>
-								<th scope="col">负责人</th>
-								<th scope="col">项目状态</th>
-								<th scope="col">修改时间</th>
-								<th scope="col">操作</th>
+							<th scope="col">序号</th>
+							<c:forEach items="${titleList}" var="p" varStatus="status">
+								<th scope="col">${p}</th>
+							</c:forEach>
 							</tr>
 						</thead>
 						<tbody>
+							<%
+							if(request.getAttribute("info_type") == "1")
+							{
+							%>
 							<c:forEach items="${projectList}" var="p" varStatus="status">
-								<tr>
+							<tr>
 									<th scope="row"><b>${status.index+1}</b></th>
 									<td>${p.pName}</td>
 									<td>${p.create }</td>
@@ -112,12 +120,44 @@
 									<td>${p.headName }</td>
 									<td>${p.status }</td>
 									<td>${p.modifyTime }</td>
-									<td><button type="button" class="table_button" onclick="edit(${p.pid})">修改</button> 
-									<button type="button" class="table_button" onclick="deleteById(${p.pid})">删除</button></td>
 								</tr>
 							</c:forEach>
+							<%
+							}else if(request.getAttribute("info_type") == "2")
+							{
+							%>
+							<c:forEach items="${taskList}" var="p" varStatus="status">
+							<tr>
+									<th scope="row"><b>${status.index+1}</b></th>
+									<td>${p.taskName}</td>
+									<td >${p.uName}</td>
+									<td>${p.create }</td>
+									<td>${p.createByName }</td>
+									<%-- <td class="status">${p.status }</td> --%>
+									<td>${p.modifyTime }</td>
+								</tr>
+							</c:forEach>
+							<%
+							}else if(request.getAttribute("info_type") == "3")
+							{
+							%>
+							<c:forEach items="${userList}" var="p" varStatus="status">
+							<tr>
+									<th scope="row"><b>${status.index+1}</b></th>
+									<td>${p.username}</td>
+									<%-- <td>${p.tel }</td> --%>
+								</tr>
+							</c:forEach>
+							<%
+							}
+							%>
+								
 						</tbody>
 					</table>
+					</div>
+					<%
+						}
+					%>
 				</div>
 			</div>
 			<script src="js/jquery-3.3.1.min.js"></script>
@@ -145,27 +185,10 @@
 						updateBarChart();
 					});
 				})
-				function edit(val){
-					if(<%= session.getAttribute("permission")%> != 1){
-						alert("权限不足");
-					}else{
-						window.location.href="editProject.action?PId="+val;
-					}
-				}
-				function deleteById(val){
-					if(<%= session.getAttribute("permission")%> != 1){
-						alert("权限不足");
-					}else{
-						window.location.href="projectDelete.action?pId="+val;
-					}
-				}
 				function Query(){
-					var pName = document.getElementById("pName").value;
-					window.location.href="projectSearch.action?pName="+pName;
-				}
-				function Add(){
-					var pName = document.getElementById("pName").value;
-					window.location.href="addProject.action?pName="+pName;
+					var select = document.getElementById("select_class").value;
+					var name = document.getElementById("pName").value;
+					window.location.href="querybyName.action?type="+select+"&name="+name; 
 				}
 			</script>
 </body>

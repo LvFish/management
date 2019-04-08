@@ -1,7 +1,9 @@
 package com.hsh.struts2;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +14,10 @@ import org.apache.struts2.ServletActionContext;
 
 import com.hsh.dao.PersonnelDao;
 import com.hsh.dao.ProjectDao;
+import com.hsh.dao.UserDao;
 import com.hsh.entity.Personnel;
 import com.hsh.entity.Project1;
+import com.hsh.entity.User;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 
@@ -52,9 +56,13 @@ public class ManagePersonAction implements Action{
 		PersonnelDao personnelDao = new PersonnelDao();
 		List<Personnel> list = new ArrayList<>();
 		list = personnelDao.queryByPId(Integer.valueOf(pId));
+		List<User> userList = new ArrayList<>();
+		userList = personnelDao.queryUserNotInProject(pId);
 		Map<String,Object> map =  ActionContext.getContext().getSession();
 		map.put("personnelList", list);
 		map.put("pName", pName);
+		map.put("userList", userList);
+		map.put("pid", pId);
 		return "success";
 	}
 	
@@ -71,6 +79,9 @@ public class ManagePersonAction implements Action{
 		PersonnelDao personnelDao = new PersonnelDao();
 		personnelDao.deleteById(Integer.valueOf(id));
 		map.put("personnelList", list);
+		List<User> userList = new ArrayList<>();
+		userList = personnelDao.queryUserNotInProject(((String)map.get("pid")));
+		map.put("userList", userList);
 		return "success";
 	}
 	
@@ -83,5 +94,26 @@ public class ManagePersonAction implements Action{
 		return NONE;
 	}
 	
-
+	public String addPersonnel() throws ClassNotFoundException, SQLException{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String uid = request.getParameter("uid");
+		Map<String,Object> map =  ActionContext.getContext().getSession();
+		Personnel p = new Personnel();
+		p.setPid(Integer.valueOf(map.get("pid").toString()));
+		p.setUid(Integer.valueOf(uid));
+		p.setCreateBy(Integer.valueOf((String)map.get("uid").toString()));
+		p.setStatus("start");
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		p.setCreate(fmt.format(new Date()));
+		p.setModifyTime(fmt.format(new Date()));
+		PersonnelDao personnelDao = new PersonnelDao();
+		personnelDao.insert(p);
+		List<Personnel> list = personnelDao.queryByPId(Integer.valueOf((String)map.get("pid")));
+		map.put("personnelList", list);
+		List<User> userList = new ArrayList<>();
+		userList = personnelDao.queryUserNotInProject(((String)map.get("pid")));
+		map.put("userList", userList);
+		return "success";
+	}
+	
 }

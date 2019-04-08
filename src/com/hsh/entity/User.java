@@ -5,6 +5,13 @@ public class User {
 	private String username;
 	private String password;
 	private int permission;
+	private String tel;
+	public String getTel() {
+		return tel;
+	}
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
 	public int getPermission() {
 		return permission;
 	}
